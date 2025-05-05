@@ -1,7 +1,7 @@
 # VoyageAI-PythonClient
 
 Python client for embedding and querying documents using VoyageAI and MongoDB Atlas Vector Search.
-Demos assume paid 🔑 you can grab one here -> https://www.voyageai.com/ 
+Demos assume paid 🔑 you can grab one here -> https://www.voyageai.com/ <br>
 Untested on Antikythera Mechanism ⚙️
 
 🧠 Basics: Setup & Usage
