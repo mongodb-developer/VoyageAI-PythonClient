@@ -1,0 +1,3 @@
+voyageai==0.2.3
+pymongo==4.6.1
+numpy==1.26.4
