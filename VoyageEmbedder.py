@@ -12,7 +12,7 @@ client_voyage = Client(api_key=VOYAGE_API_KEY)
 mongo_client = pymongo.MongoClient(MONGODB_URI)
 collection = mongo_client[DB_NAME][COLLECTION_NAME]
 
-# === FUNNY AI SENTENCES ===
+# === DOCUMENTS ===
 sentences = [
     "My AI assistant tried to order pizza after watching a YouTube tutorial on Italian culture.",
     "I asked ChatGPT for a bedtime story and it generated a 3-act play about quantum ethics.",
