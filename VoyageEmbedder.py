@@ -5,7 +5,7 @@ from voyageai import Client
 VOYAGE_API_KEY = ""
 MONGODB_URI = ""
 DB_NAME = "vector_tests"
-COLLECTION_NAME = "vectors_demo_large2"
+COLLECTION_NAME = "vectors_demo_large3"
 
 # === SETUP ===
 client_voyage = Client(api_key=VOYAGE_API_KEY)
@@ -30,7 +30,7 @@ sentences = [
 for sentence in sentences:
     response = client_voyage.embed(
         texts=[sentence],
-        model="voyage-large-2",
+        model="voyage-3-large",
         input_type="document"
     )
     embedding = response.embeddings[0]
