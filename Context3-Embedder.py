@@ -5,7 +5,7 @@ from voyageai import Client
 VOYAGE_API_KEY = ""
 MONGODB_URI = ""
 DB_NAME = "vector_tests"
-COLLECTION_NAME = "vectors_demo_large2"
+COLLECTION_NAME = "vectors_demo_large"
 
 # === SETUP ===
 client_voyage = Client(api_key=VOYAGE_API_KEY)
