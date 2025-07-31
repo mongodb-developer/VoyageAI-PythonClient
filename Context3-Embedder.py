@@ -28,9 +28,9 @@ sentences = [
 
 # === EMBED & INSERT INTO MONGODB ===
 response = client_voyage.contextualized_embed(
-    texts=sentences,
-    model="voyage-context-3",
-    input_type="document"
+  inputs=[[s] for s in sentences],
+  model="voyage-context-3",
+  input_type="document"
 )
 
 for sentence, embedding in zip(sentences, response.embeddings):
