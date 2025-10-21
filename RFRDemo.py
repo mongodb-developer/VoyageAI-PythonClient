@@ -115,7 +115,7 @@ def show(results, title):
         snippet = textwrap.shorten(r["document"], width=100, placeholder="…")
         print(f"{i}. [score={r['relevance_score']:.4f}] {snippet}")
 
-# ============ Run: Fusion vs your original single-step rerank ============
+# ============ Fusion ============
 # Fusion runs (two query flavors to show effect)
 fusion_base = rerank_fusion(no_instruction_query, documents, final_top_k=3, rerank_model="rerank-2.5")
 fusion_inst = rerank_fusion(instruction_query, documents, final_top_k=3, rerank_model="rerank-2.5")
