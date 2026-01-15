@@ -3,7 +3,7 @@ from voyageai import Client as VoyageClient
 import openai
 
 # --- Mongo ---
-client = pymongo.MongoClient("mongodb+srv://<USER>:<PASS>@darkstar.tnhx6.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("")
 db = client.voyagenew
 collection = db.demo_rag
 
