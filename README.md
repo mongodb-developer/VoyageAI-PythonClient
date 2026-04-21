@@ -1,6 +1,6 @@
 # VoyageAI-PythonClient
 
-Python client for embedding and querying documents using VoyageAI and MongoDB Atlas Vector Search.
+Python client for embedding and querying documents using VoyageAI and MongoDB Vector Search.
 Demos assume paid 🔑 you can grab one here -> https://www.voyageai.com/ <br>
 Untested on Antikythera Mechanism ⚙️
 
@@ -33,7 +33,7 @@ voyage-2 is more accurate and better for reranking or production search.
 
 Batch embeddings — the API supports bulk input for embedding up to 96 texts at once for voyage-2.
 
-📦 Integrate with MongoDB Atlas Vector Search
+📦 Integrate with MongoDB Vector Search
 ```
 # Insert into MongoDB with PyMongo
 doc = {
@@ -46,7 +46,7 @@ collection.insert_one(doc)
 
 ⚡ Hybrid Search Pattern
 
-Use MongoDB Atlas Search for keyword/text filters (e.g., "project_id": 123).
+Use MongoDB Search for keyword/text filters (e.g., "project_id": 123).
 Use VoyageAI embeddings to do vector similarity via $vectorSearch.
 
 Optionally use VoyageAI reranker for final reranking:
