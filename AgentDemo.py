@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # =========================
-# CONFIG (NO ENV BS 😄)
+# CONFIG goes here! 😄)
 # =========================
 
 MONGODB_URI = ""
