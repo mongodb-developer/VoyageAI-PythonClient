@@ -12,20 +12,20 @@ console = Console()
 
 # --- Configuration ---
 MONGO_URI = ""
-VOYAGE_API_KEY = "VOYAGE_KEY_HERE"
-OPENAI_API_KEY = "OPENAI_KEY_HERE"
+VOYAGE_API_KEY = ""
+OPENAI_API_KEY = ""
 
 # Document embedding model (used once, upfront)
 DOCUMENT_MODEL = "voyage-4-large"
 
 # Query embedding models (for comparison)
-QUERY_MODELS = ["voyage-4-large", "voyage-4-lite", "voyage-4-nano"]
+QUERY_MODELS = ["voyage-4-large", "voyage-4-lite", "voyage-3-large"]
 
 # Pricing (per 1M tokens) - approximate
 MODEL_COSTS = {
     "voyage-4-large": 0.12,
     "voyage-4-lite": 0.06,
-    "voyage-4-nano": 0.02,
+    "voyage-3-large": 0.02,
 }
 
 # Expert styling
@@ -58,17 +58,22 @@ def retrieve(query_embedding, category=None, k=3):
             "index": "vector_index",
             "path": "embedding",
             "queryVector": query_embedding,
-            "numCandidates": 50,
-            "limit": k,
+            "numCandidates": 200 if category else 50,
+            "limit": 100 if category else k,
         }
     }
-    if category:
-        stage["$vectorSearch"]["filter"] = {"category": category}
 
-    return list(collection.aggregate([
+    pipeline = [
         stage,
-        {"$project": {"_id": 0, "text": 1, "category": 1, "score": {"$meta": "vectorSearchScore"}}}
-    ]))
+        {"$project": {"_id": 0, "text": 1, "category": 1, "score": {"$meta": "vectorSearchScore"}}},
+    ]
+    # 'category' isn't indexed as a filter in the vector index, so filter
+    # after the vector search instead of inside $vectorSearch.
+    if category:
+        pipeline.append({"$match": {"category": category}})
+        pipeline.append({"$limit": k})
+
+    return list(collection.aggregate(pipeline))
 
 
 def route(q):
@@ -214,7 +219,7 @@ def show_embedding_comparison(question, query_models):
     # Show cost savings
     large_cost = MODEL_COSTS[DOCUMENT_MODEL]
     lite_cost = MODEL_COSTS["voyage-4-lite"]
-    nano_cost = MODEL_COSTS["voyage-4-nano"]
+    nano_cost = MODEL_COSTS["voyage-3-large"]
     
     savings_lite = ((large_cost - lite_cost) / large_cost) * 100
     savings_nano = ((large_cost - nano_cost) / large_cost) * 100
@@ -222,10 +227,10 @@ def show_embedding_comparison(question, query_models):
     console.print(Panel(
         f"[bold green]💰 Cost Savings with Asymmetric Retrieval[/bold green]\n\n"
         f"Documents: [cyan]{DOCUMENT_MODEL}[/cyan] (embedded once)\n"
-        f"Queries: [cyan]voyage-4-lite[/cyan] or [cyan]voyage-4-nano[/cyan] (per request)\n\n"
+        f"Queries: [cyan]voyage-4-lite[/cyan] or [cyan]voyage-3-large[/cyan] (per request)\n\n"
         f"Savings vs all-large:\n"
         f"  • voyage-4-lite: [yellow]{savings_lite:.0f}% cheaper[/yellow] per query\n"
-        f"  • voyage-4-nano: [yellow]{savings_nano:.0f}% cheaper[/yellow] per query\n\n"
+        f"  • voyage-3-large: [yellow]{savings_nano:.0f}% cheaper[/yellow] per query\n\n"
         f"Example: 1M queries/month\n"
         f"  • All large: [red]${large_cost*1000:.0f}/month[/red]\n"
         f"  • Asymmetric (nano): [green]${nano_cost*1000:.0f}/month[/green] [bold]({savings_nano:.0f}% savings!)[/bold]",
