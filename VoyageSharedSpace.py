@@ -19,13 +19,13 @@ OPENAI_API_KEY = ""
 DOCUMENT_MODEL = "voyage-4-large"
 
 # Query embedding models (for comparison)
-QUERY_MODELS = ["voyage-4-large", "voyage-4-lite", "voyage-3-large"]
+QUERY_MODELS = ["voyage-4-large", "voyage-4-lite"]
 
 # Pricing (per 1M tokens) - approximate
 MODEL_COSTS = {
+    "voyage-4": 0.06,
+    "voyage-4-lite": 0.02,
     "voyage-4-large": 0.12,
-    "voyage-4-lite": 0.06,
-    "voyage-3-large": 0.02,
 }
 
 # Expert styling
@@ -219,21 +219,18 @@ def show_embedding_comparison(question, query_models):
     # Show cost savings
     large_cost = MODEL_COSTS[DOCUMENT_MODEL]
     lite_cost = MODEL_COSTS["voyage-4-lite"]
-    nano_cost = MODEL_COSTS["voyage-3-large"]
     
     savings_lite = ((large_cost - lite_cost) / large_cost) * 100
-    savings_nano = ((large_cost - nano_cost) / large_cost) * 100
     
     console.print(Panel(
         f"[bold green]💰 Cost Savings with Asymmetric Retrieval[/bold green]\n\n"
         f"Documents: [cyan]{DOCUMENT_MODEL}[/cyan] (embedded once)\n"
-        f"Queries: [cyan]voyage-4-lite[/cyan] or [cyan]voyage-3-large[/cyan] (per request)\n\n"
+        f"Queries: [cyan]voyage-4-lite[/cyan] (per request)\n\n"
         f"Savings vs all-large:\n"
-        f"  • voyage-4-lite: [yellow]{savings_lite:.0f}% cheaper[/yellow] per query\n"
-        f"  • voyage-3-large: [yellow]{savings_nano:.0f}% cheaper[/yellow] per query\n\n"
+        f"  • voyage-4-lite: [yellow]{savings_lite:.0f}% cheaper[/yellow] per query\n\n"
         f"Example: 1M queries/month\n"
         f"  • All large: [red]${large_cost*1000:.0f}/month[/red]\n"
-        f"  • Asymmetric (nano): [green]${nano_cost*1000:.0f}/month[/green] [bold]({savings_nano:.0f}% savings!)[/bold]",
+        f"  • Asymmetric (lite): [green]${lite_cost*1000:.0f}/month[/green] [bold]({savings_lite:.0f}% savings!)[/bold]",
         border_style="green",
         box=box.ROUNDED
     ))
