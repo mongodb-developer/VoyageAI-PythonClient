@@ -1,3 +1,4 @@
+#if customer is stuck on openAI embeddings position the re-ranker to improve their accuracy 
 import math
 import time
 
