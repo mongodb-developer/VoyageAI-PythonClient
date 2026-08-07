@@ -10,7 +10,7 @@ import time
 
 console = Console()
 
-# --- Configuration ---
+# -- Configuration --
 MONGO_URI = ""
 VOYAGE_API_KEY = ""
 OPENAI_API_KEY = ""
